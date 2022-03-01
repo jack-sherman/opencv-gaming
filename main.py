@@ -1,6 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
+# using PIL for capturing frames because it is faster than pyautogui/cv2
 from PIL import ImageGrab
 import time
 import keyboard
@@ -34,7 +35,7 @@ def captureScreenRegion(box):
 while searching:
     # pixel coordinates of image.
     # (Top left pixel x, top left pixel y, bottom right pixel x, bottom right pixel y)
-    box = (0, 0, 1920, 1080)
+    box = (300, 300, 600, 600)
     # screenshot of original image for display later
     original = captureScreenRegion(box)
     # screenshot of image in grayscale for image processing
@@ -47,6 +48,8 @@ while searching:
     for (x, y, w, h) in faces:
         cv.rectangle(original, (x,y), (x+w,y+h), (0,0,255), 3)
     cv.imshow('screen', original)
+    print('Frames per second: {}'.format(1 / (time.time() - start_time)))
+    start_time = time.time()
 
 
     # Break on keyboard z press
