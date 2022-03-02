@@ -4,14 +4,16 @@ import os
 # using PIL for capturing frames because it is faster than pyautogui/cv2
 from PIL import ImageGrab
 import time
-import keyboard
+import pydirectinput
+
+
 
 start_time = time.time()
 
 searching = True
 # find the data to start the cascade classifier and initialize it
-cascade_path = os.path.dirname(cv.__file__)+"/data/haarcascade_frontalface_default.xml"
-faceClassifier = cv.CascadeClassifier(cascade_path)
+cascade_path = "cascade/cascade.xml"
+targetClassifier = cv.CascadeClassifier(cascade_path)
 
 
 def captureScreenRegionGRAYSCALE(box):
@@ -35,7 +37,7 @@ def captureScreenRegion(box):
 while searching:
     # pixel coordinates of image.
     # (Top left pixel x, top left pixel y, bottom right pixel x, bottom right pixel y)
-    box = (300, 300, 600, 600)
+    box = (0, 0, 1920, 1080)
     # screenshot of original image for display later
     original = captureScreenRegion(box)
     # screenshot of image in grayscale for image processing
@@ -43,11 +45,12 @@ while searching:
     # use equalized histograms to improve image contrast
     screen = cv.equalizeHist(screen)
     # use the face classifier to identify all faces in a frame
-    faces = faceClassifier.detectMultiScale(screen)
-    # each face has a x and y coordinate along with a width and a height.
-    # I'm using these to draw boxes around each face in the frame
-    for (x, y, w, h) in faces:
-        cv.rectangle(original, (x,y), (x+w,y+h), (0,0,255), 3)
+    targets = targetClassifier.detectMultiScale(original)
+    # each target has a x and y coordinate along with a width and a height.
+    # I'm using these to draw boxes around each target in the frame
+    for (x, y, w, h) in targets:
+        cv.rectangle(original, (x, y), (x+w, y+h), (0, 0, 255), 3)
+
     cv.imshow('screen', original)
 
     # record the framerate
