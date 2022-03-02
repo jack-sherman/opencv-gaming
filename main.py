@@ -42,12 +42,15 @@ while searching:
     screen = captureScreenRegionGRAYSCALE(box)
     # use equalized histograms to improve image contrast
     screen = cv.equalizeHist(screen)
-
+    # use the face classifier to identify all faces in a frame
     faces = faceClassifier.detectMultiScale(screen)
-
+    # each face has a x and y coordinate along with a width and a height.
+    # I'm using these to draw boxes around each face in the frame
     for (x, y, w, h) in faces:
         cv.rectangle(original, (x,y), (x+w,y+h), (0,0,255), 3)
     cv.imshow('screen', original)
+
+    # record the framerate
     print('Frames per second: {}'.format(1 / (time.time() - start_time)))
     start_time = time.time()
 
