@@ -1,0 +1,2 @@
+# OpenCV Object Detection in Games
+I made this project specifically to apply some of what I've been learning with opencv to games. Initially I am looking to train a haar classifier to identify targets in the game Aim Labs. I chose this game because the targets are relatively static, easy to see,  and it should be easy to gerate positive and negative images and annotate them all. The classifier was trained using opencv's 'opencv_traincascade' application with images annotated with 'opencv_annotation'. 
